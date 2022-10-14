@@ -1,0 +1,115 @@
+<div class="container-fluid">
+  <div class="row row-model">
+    <div class="col-4 offset-1">
+      <div>{{error}}</div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-2 offset-1">
+      <div class="shadow-sm p-2 mb-2 bg-white" align="center">
+        <h2>{{midiKeyboardDto.manufacturer}} {{midiKeyboardDto.model}}</h2>
+      </div>
+      <table class="table table-bordered">
+        <thead></thead>
+        <tbody>
+          <tr>
+            <th>Модель: </th>
+            <th>{{midiKeyboardDto.model}}</th>
+          </tr>
+          <tr>
+            <th>Производитель: </th>
+            <th>{{midiKeyboardDto.manufacturer}}</th>
+          </tr>
+          <tr>
+            <th>Кол-во клавиш: </th>
+            <th>{{midiKeyboardDto.keysNumber}}</th>
+          </tr>
+          <tr>
+            <th>Midi-Выход </th>
+            <td>
+              <div class="midi-out-img mx-auto" [ngClass]="{'image-yes': midiKeyboardDto.hasMidiOut,
+              'image-no': !midiKeyboardDto.hasMidiOut}">
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <th>Цена: </th>
+            <th>{{midiKeyboardDto.price}}</th>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-3">
+      <div *ngIf="midiKeyboardDto.specificationId; then thenBlock else elseBlock"></div>
+      <ng-template #thenBlock>
+        <div class="shadow-sm p-2 mb-2 bg-white" align="center">
+          <h2>Спецификация</h2>
+        </div>
+        <table class="table table-bordered">
+          <thead></thead>
+          <tbody>
+            <tr>
+              <th>Вес: </th>
+              <th>{{specificationDto.weight}}</th>
+            </tr>
+            <tr>
+              <th>Длина: </th>
+              <th>{{specificationDto.length}}</th>
+            </tr>
+            <tr>
+              <th>Ширина: </th>
+              <th>{{specificationDto.width}}</th>
+            </tr>
+            <tr>
+              <th>Чувствительность </th>
+              <td>
+                <div class="midi-out-img mx-auto" [ngClass]="{'image-yes':specificationDto.velocity,
+                  'image-no': !specificationDto.velocity}">
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <th>Механика: </th>
+              <th>{{enumService.getTypeOfKeyEnumValue(specificationDto.typeOfKey)}}</th>
+            </tr>
+          </tbody>
+        </table>
+      </ng-template>
+      <ng-template #elseBlock>
+        <div class="shadow-sm p-2 mb-2 bg-white" align="center">
+          <h3>Спецификация отсутствует!</h3>
+        </div>
+        <button class="btn btn-block btn-outline-success">Добавить</button>
+      </ng-template>
+    </div>
+    <div class="col-5">
+      <div class="shadow-sm p-2 mb-2 bg-white" align="center">
+        <h2>Владельцы</h2>
+      </div>
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Имя</th>
+            <th>Пол</th>
+            <th>Возраст</th>
+            <th>Уровень игры</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let owner of midiKeyboardDto.owners" (click)="viewOwner(owner.id)">
+            <th>{{owner.id}}</th>
+            <th>{{owner.name}}</th>
+            <th>{{enumService.getSexEnumValue(owner.sex)}}</th>
+            <th>{{owner.age}}</th>
+            <th>{{enumService.getSkillLevelEnumValue(owner.skillLevel)}}</th>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="!midiKeyboardDto.owners || (midiKeyboardDto.owners && !midiKeyboardDto.owners.length)"
+           class="alert alert-light" role="alert">
+        <h5 align="center">Владельцы отсутствуют</h5>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="container-fluid">
+  <div class="col-10 offset-1">
+    <div class="row">
+      <div class="col-3" id="addButton">
+        <input type="button" value="Добавить" class="btn btn-success mb-2" (click)="addOwner()"/>
+      </div>
+      <div class="col-6" align="center">
+        <h2>Список владельцев</h2>
+      </div>
+      <div class="col-3">
+        <div *ngIf="statusMessage" class="alert alert-success alert-dismissible">
+          <strong>{{statusMessage}}</strong>
+        </div>
+        <div *ngIf="statusErrorMessage" class="alert alert-danger alert-dismissible">
+          <strong>{{statusErrorMessage}}</strong>
+        </div>
+      </div>
+    </div>
+
+    <table class="table table-striped">
+      <thead>
+      <tr>
+        <td>Id</td>
+        <td>Имя</td>
+        <td>Пол</td>
+        <td>Возраст</td>
+        <td>Уровень</td>
+        <td class="short-col"></td>
+        <td class="short-col"></td>
+        <td class="short-col"></td>
+      </tr>
+      </thead>
+      <tbody *ngIf="newOwner">
+        <!--шаблон для добавления-->
+        <td></td>
+        <td>
+          <input type="text" [(ngModel)]="newOwner.name" class="form-control" placeholder="Введите имя:"/>
+        </td>
+        <td>
+          <select class="form-control" name="sex" [(ngModel)]="newOwner.sex">
+            <option value="undefined" [disabled]="true">Укажите пол:</option>
+            <option value="MALE">Мужчина</option>
+            <option value="FEMALE">Женщина</option>
+            <option value="SISSY">Sissy</option>
+          </select>
+        </td>
+        <td>
+          <input type="number" [(ngModel)]="newOwner.age" class="form-control" placeholder="Укажите возраст:" min="1"/>
+        </td>
+        <td>
+          <select class="form-control" name="skillLevel" [(ngModel)]="newOwner.skillLevel">
+            <option [value]="undefined" [disabled]="true">Укажите уровень игры:</option>
+            <option value="PIONEER">Новичок</option>
+            <option value="AMATEUR">Любитель</option>
+            <option value="PROFESSIONAL">Профессионал</option>
+            <option value="GOD">Гений</option>
+          </select>
+        </td>
+        <td>
+          <input type="button" value="Сохранить" (click)="saveNewOwner()" class="btn btn-success" />
+        </td>
+        <td>
+          <input type="button" value="Отмена добавления" (click)="cancelAddOwner()" class="btn btn-warning" />
+        </td>
+      </tbody>
+      <tbody>
+      <tr *ngFor="let owner of owners">
+        <ng-template [ngTemplateOutlet]="loadTemplate(owner)"
+                     [ngTemplateOutletContext]="{ $implicit: owner}">
+        </ng-template>
+      </tr>
+      </tbody>
+    </table>
+
+    <!--шаблон для чтения-->
+    <ng-template #viewTemplate let-owner>
+      <td>{{owner.id}}</td>
+      <td>{{owner.name}}</td>
+      <td>{{enumService.getSexEnumValue(owner.sex)}}</td>
+      <td>{{owner.age}}</td>
+      <td>{{enumService.getSkillLevelEnumValue(owner.skillLevel)}}</td>
+      <td>
+        <input type="button" value="Подробнее" (click)="viewOwner(owner.id)" class="btn btn-dark"/>
+      </td>
+      <td>
+        <input type="button" value="Изменить" (click)="editOwner(owner)" class="btn btn-primary"/>
+      </td>
+      <td>
+        <input type="button" value="Удалить" (click)="confirmDelete(owner)" class="btn btn-danger"/>
+      </td>
+      <div class="modal" id="confirmDeleteOwner">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h4 class="modal-title">Подтверждение удаления</h4>
+            </div>
+            <div class="modal-body">
+              <table class="table table-sm">
+                <thead>
+                <tr>
+                  <th>Id</th>
+                  <th>Имя</th>
+                  <th>Возраст</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr>
+                  <td>{{deletedOwner.id}}</td>
+                  <td>{{deletedOwner.name}}</td>
+                  <td>{{deletedOwner.age}}</td>
+                </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+              <h5>Удалить владельца?</h5>
+              <button type="button" (click)="deleteOwner(deletedOwner)" data-dismiss="modal" class="btn btn-danger">
+                да
+              </button>
+              <button type="button" (click)="cancelDelete()" data-dismiss="modal" class="btn btn-primary">
+                нет
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+
+    <!--шаблон для редактирования-->
+    <ng-template #editTemplate>
+      <td>
+        <input type="number" [(ngModel)]="editedOwner.id" readonly disabled class="form-control"/>
+      </td>
+      <td>
+        <input type="text" [(ngModel)]="editedOwner.name" class="form-control" placeholder="Имя:"/>
+      </td>
+      <td>
+        <select class="form-control" name="sex" [(ngModel)]="editedOwner.sex">
+          <option value="undefined" [disabled]="true">Пол:</option>
+          <option value="MALE">Мужчина</option>
+          <option value="FEMALE">Женщина</option>
+          <option value="SISSY">Sissy</option>
+        </select>
+      </td>
+      <td>
+        <input type="number" [(ngModel)]="editedOwner.age" class="form-control" placeholder="Возраст:"/>
+      </td>
+      <td>
+        <select class="form-control" name="skillLevel" [(ngModel)]="editedOwner.skillLevel">
+          <option [value]="undefined" [disabled]="true">Уровень:</option>
+          <option value="PIONEER">Новичок</option>
+          <option value="AMATEUR">Любитель</option>
+          <option value="PROFESSIONAL">Профессионал</option>
+          <option value="GOD">Гений</option>
+        </select>
+      </td>
+      <td>
+        <input type="button" value="Сохранить" (click)="saveOwner()" class="btn btn-success"/>
+      </td>
+      <td>
+        <input type="button" value="Отмена" (click)="cancel()" class="btn btn-warning"/>
+      </td>
+    </ng-template>
+  </div>
+</div>

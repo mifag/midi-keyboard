@@ -1,0 +1,70 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-2 offset-2">
+      <div>{{error}}</div>
+      <div class="shadow-lg" align="center">
+        <h3>Владелец</h3>
+      </div>
+      <table class="table table-bordered table-dark">
+        <thead></thead>
+        <tbody>
+          <tr>
+            <th class="short-col">Id:</th>
+            <td>{{ownerDto.id}}</td>
+          </tr>
+          <tr>
+            <th>Имя:</th>
+            <td>{{ownerDto.name}}</td>
+          </tr>
+          <tr>
+            <th>Пол:</th>
+            <td>{{enumService.getSexEnumValue(ownerDto.sex)}}</td>
+          </tr>
+          <tr>
+            <th>Возраст:</th>
+            <td>{{ownerDto.age}}</td>
+          </tr>
+          <tr>
+            <th>Уровень игры:</th>
+            <td>{{enumService.getSkillLevelEnumValue(ownerDto.skillLevel)}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="col-6">
+      <div class="shadow-lg" align="center">
+        <h3>Midi-клавиатуры</h3>
+      </div>
+      <table class="table table-bordered table-dark table-hover">
+        <thead>
+        <tr class="tr-head">
+          <th>Id</th>
+          <th>Модель</th>
+          <th>Производитель</th>
+          <th>Количество клавиш</th>
+          <th>Midi-выход</th>
+          <th>Цена</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let midiKeyboard of ownerDto.midiKeyboardList"
+            (click)="viewMidiKeyboard(midiKeyboard.id)">
+          <td class="short-col">{{midiKeyboard.id}}</td>
+          <td>{{midiKeyboard.model}}</td>
+          <td class="regular-col">{{midiKeyboard.manufacturer}}</td>
+          <td class="short-col">{{midiKeyboard.keysNumber}}</td>
+          <td class="short-col" >
+            <div class="midi-out-img mx-auto" [ngClass]="{'image-yes': midiKeyboard.hasMidiOut,
+              'image-no': !midiKeyboard.hasMidiOut}">
+            </div>
+          </td>
+          <td>{{midiKeyboard.price}}</td>
+        </tr>
+        </tbody>
+      </table>
+      <div *ngIf="!ownerDto.midiKeyboardList || (ownerDto.midiKeyboardList && !ownerDto.midiKeyboardList.length)" class="alert alert-dark" role="alert" align="center">
+        <h4>У данного человека отсутствуют клавиатуры.</h4>
+      </div>
+    </div>
+  </div>
+</div>

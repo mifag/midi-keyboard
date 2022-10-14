@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-7 offset-1">
+      <table class="table table-bordered table-dark table-hover">
+        <thead>
+          <tr>
+            <th>Id</th>
+            <th>Модель</th>
+            <th>Производитель</th>
+            <th>Количество клавиш</th>
+            <th>Midi-выход</th>
+            <th>Цена</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let midiKeyboard of midiKeyboardList"
+              (click)="viewMidiKeyboard(midiKeyboard.id)">
+            <td class="short-col">{{midiKeyboard.id}}</td>
+            <td>{{midiKeyboard.model}}</td>
+            <td class="regular-col">{{midiKeyboard.manufacturer}}</td>
+            <td class="short-col">{{midiKeyboard.keysNumber}}</td>
+            <td class="short-col" >
+              <div class="midi-out-img mx-auto" [ngClass]="{'image-yes': midiKeyboard.hasMidiOut,
+              'image-no': !midiKeyboard.hasMidiOut}">
+              </div>
+            </td>
+            <td>{{midiKeyboard.price}}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div *ngIf="!midiKeyboardList.length" class="alert alert-dark" role="alert">
+        По вашему запросу ничего не найдено.
+      </div>
+    </div>
+    <div class="col-3">
+      <h3>Фильтр:</h3>
+      <form>
+        <div class="form-group">
+          <label for="midi-id">Id:</label>
+          <input type="number" class="form-control" id="midi-id" min="1"
+                 [(ngModel)]="midiKeyboardSearchDto.id" placeholder="Введите id" name="midi-id">
+        </div>
+        <div class="form-group">
+          <label for="midi-model">Модель:</label>
+          <input type="text" class="form-control" id="midi-model"
+                 [(ngModel)]="midiKeyboardSearchDto.model"
+                 placeholder="Введите модель" name="model"
+                 (change)="searchMidiKeyboard()">
+        </div>
+        <div class="form-group">
+          <label for="midi-manufacturer">Производитель:</label>
+          <input type="text" class="form-control" id="midi-manufacturer"
+                 [(ngModel)]="midiKeyboardSearchDto.manufacturer"
+                 placeholder="Введите производителя" name="manufacturer"
+                 (ngModelChange)="searchMidiKeyboard()">
+        </div>
+        <div class="form-group">
+          <label for="midi-key">Кол-во клавиш:</label>
+          <input type="number" class="form-control" id="midi-key" min="1" max="88"
+                 [(ngModel)]="midiKeyboardSearchDto.keysNumber" placeholder="Введите количество клавиш" name="keys"
+                 (change)="keysChange()">
+        </div>
+        <div class="form-group">
+          <label for="midi-price">Цена:</label>
+          <input type="number" class="form-control" id="midi-price" min="1"
+                 [(ngModel)]="midiKeyboardSearchDto.price" placeholder="Введите цену" name="price">
+        </div>
+        <div class="form-group">
+          <div class="form-check-inline">
+            <label>
+              Миди-выход:
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" [(ngModel)]="midiKeyboardSearchDto.hasMidiOut"
+                     name="midi-out" value="true" (ngModelChange)="searchMidiKeyboard()">есть
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" [(ngModel)]="midiKeyboardSearchDto.hasMidiOut"
+                     name="midi-out" value="false" (ngModelChange)="searchMidiKeyboard()">нет
+            </label>
+          </div>
+          <div class="form-check-inline">
+            <label class="form-check-label">
+              <input type="radio" class="form-check-input" [(ngModel)]="midiKeyboardSearchDto.hasMidiOut"
+                     name="midi-out" (ngModelChange)="searchMidiKeyboard()">показать все
+            </label>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-dark" (click)="searchMidiKeyboard()">
+          Поиск
+        </button>
+        <button type="button" class="btn btn-light" (click)="clearFilter()">
+          Очистить
+        </button>
+        <div class="form-group pt-2">
+          <select class="form-control" name="model" [(ngModel)]="midiKeyboardSearchDto.model"
+                  (click)="searchMidiKeyboard()">
+            <option [value]="undefined" [disabled]="true">Выбрать определенную модель</option>
+            <option  *ngFor="let midiKeyboard of midiKeyboardList" [value]="midiKeyboard.model">
+              {{midiKeyboard.model}}
+            </option>
+          </select>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

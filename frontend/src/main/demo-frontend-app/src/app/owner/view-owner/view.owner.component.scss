@@ -1,0 +1,31 @@
+.container-fluid {
+  padding-top: 70px;
+  .table {
+    tr {
+       text-align: center;
+    }
+
+    .short-col {
+      width: 10%;
+    }
+
+    .regular-col {
+      width: 20%;
+    }
+
+    .midi-out-img {
+      width: 20px;
+      height: 20px;
+    }
+
+    .image-yes {
+      background: url("/../../assets/images/pngwing.yes.png");
+      background-size: 20px 20px;
+    }
+
+    .image-no {
+      background: url("/../../assets/images/pngwing.no.png");
+      background-size: 20px 20px;
+    }
+  }
+}
