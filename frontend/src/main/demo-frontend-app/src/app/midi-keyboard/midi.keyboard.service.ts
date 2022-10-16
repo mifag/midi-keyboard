@@ -18,4 +18,8 @@ export class MidiKeyboardService {
   searchMidiKeyboards(midiKeyboardSearch: MidiKeyboardSearchDto): Observable<MidiKeyboardDto[]> {
     return this.httpClient.post<MidiKeyboardDto[]>('/api/midiKeyboard/search', midiKeyboardSearch);
   }
+
+  createMidiKeyboard(midiKeyboard: MidiKeyboardDto) {
+    return this.httpClient.post('/api/midiKeyboard', midiKeyboard);
+  }
 }

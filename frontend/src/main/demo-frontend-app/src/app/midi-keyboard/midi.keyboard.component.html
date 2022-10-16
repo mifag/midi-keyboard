@@ -2,6 +2,9 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-7 offset-1">
+      <div *ngIf="statusMessage" class="alert alert-success alert-dismissible">
+        <strong>{{statusMessage}}</strong>
+      </div>
       <table class="table table-bordered table-dark table-hover">
         <thead>
           <tr>
@@ -13,6 +16,36 @@
             <th>Цена</th>
           </tr>
         </thead>
+
+        <tbody *ngIf="newMidiKeyboard">
+        <!--шаблон для добавления-->
+        <th>
+          <input type="button" value="Сохранить" (click)="saveNewMidiKeyboard()" class="btn btn-success"/>
+        </th>
+        <th>
+          <input type="text" [(ngModel)]="newMidiKeyboard.model" class="form-control" placeholder="Модель"/>
+        </th>
+        <th>
+          <input type="text" [(ngModel)]="newMidiKeyboard.manufacturer" class="form-control"
+                 placeholder="Производитель"/>
+        </th>
+
+        <th>
+          <input type="number" [(ngModel)]="newMidiKeyboard.keysNumber" class="form-control"
+                 placeholder="1-88" min="1" max="88"/>
+        </th>
+        <td>
+          <select class="form-control" name="sex" [(ngModel)]="newMidiKeyboard.hasMidiOut">
+            <option value="undefined" [disabled]="true">?</option>
+            <option value="true">есть</option>
+            <option value="false">нет</option>
+          </select>
+        </td>
+        <th>
+          <input type="number" [(ngModel)]="newMidiKeyboard.price" class="form-control"
+                 placeholder="Цена:" min="1"/>
+        </th>
+        </tbody>
         <tbody>
           <tr *ngFor="let midiKeyboard of midiKeyboardList"
               (click)="viewMidiKeyboard(midiKeyboard.id)">
@@ -33,7 +66,7 @@
         По вашему запросу ничего не найдено.
       </div>
     </div>
-    <div class="col-3">
+    <div >
       <h3>Фильтр:</h3>
       <form>
         <div class="form-group">
@@ -91,12 +124,6 @@
             </label>
           </div>
         </div>
-        <button type="submit" class="btn btn-dark" (click)="searchMidiKeyboard()">
-          Поиск
-        </button>
-        <button type="button" class="btn btn-light" (click)="clearFilter()">
-          Очистить
-        </button>
         <div class="form-group pt-2">
           <select class="form-control" name="model" [(ngModel)]="midiKeyboardSearchDto.model"
                   (click)="searchMidiKeyboard()">
@@ -107,6 +134,19 @@
           </select>
         </div>
       </form>
+      <td>
+        <input type="button" value="Поиск" (click)="searchMidiKeyboard()" class="btn btn-dark">
+      </td>
+      <td>
+        <input type="button" value="Очистить" (click)="clearFilter()" class="btn btn-light">
+      </td>
+      <td>
+        <input type="button" id="addButton" value="Добавить" (click)="addMidiKeyboard()" class="btn btn-success">
+      </td>
+      <td>
+       <input *ngIf="newMidiKeyboard" type="button" id="cancelAdd" value="Отмена добавления" (click)="cancelAddMidiKeyboard()"
+             class="btn btn-warning">
+      </td>
     </div>
   </div>
 </div>
