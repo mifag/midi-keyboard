@@ -136,6 +136,17 @@ public class OwnerService {
         return ownerDto;
     }
 
+    public OwnerDto updateOwnerAddMidiKeyboard(Long ownerId, Long midiKeyboardId)
+            throws OwnerNotFoundException, MidiKeyboardNotFoundException {
+        Owner updateOwner = findOwnerById(ownerId);
+        OwnerDto updateOwnerDto = new OwnerDto(updateOwner);
+        MidiKeyboardDto addMidiKeyboardDto = midiKeyboardService.getMidiById(midiKeyboardId);
+        List<MidiKeyboardDto> midiKeyboardDtoList = updateOwnerDto.getMidiKeyboardList();
+        midiKeyboardDtoList.add(addMidiKeyboardDto);
+        updateOwnerDto.setMidiKeyboardList(midiKeyboardDtoList);
+        return updateOwnerDto;
+    }
+
     /**
      * Search owner with specific id.
      *

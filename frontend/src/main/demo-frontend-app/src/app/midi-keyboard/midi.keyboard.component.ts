@@ -69,9 +69,9 @@ export class MidiKeyboardComponent {
   saveNewMidiKeyboard() {
     this.midiKeyboardService.createMidiKeyboard(this.newMidiKeyboard).subscribe(data => {
       this.statusMessage = 'Данные успешно добавлены';
+      this.getAllMidiKeyboards();
+      this.newMidiKeyboard = null;
     });
-    this.newMidiKeyboard = null;
-    this.getAllMidiKeyboards();
   }
 
   keysChange(){

@@ -1,13 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE module PUBLIC
-        "-//Puppy Crawl//DTD Check Configuration 1.3//EN"
-        "http://checkstyle.sourceforge.net/dtds/configuration_1_3.dtd">
-
-
-
-<!-- USE CHECKSTYLE PLUGIN VERSION 8.0 -->
-
-
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
 
 <!--
 
@@ -87,27 +81,24 @@
         <property name="message" value="Line has trailing spaces."/>
     </module>
 
-    <!-- Checks for Headers                                -->
-    <!-- See http://checkstyle.sf.net/config_header.html   -->
-    <!-- <module name="Header"> -->
-    <!--   <property name="headerFile" value="${checkstyle.header.file}"/> -->
-    <!--   <property name="fileExtensions" value="java"/> -->
-    <!-- </module> -->
+    <module name="LineLength">
+        <property name="max" value="130" />
+    </module>
 
     <module name="TreeWalker">
 
         <!-- Checks for Javadoc comments.                     -->
         <!-- See http://checkstyle.sf.net/config_javadoc.html -->
         <module name="JavadocMethod">
-            <property name="scope" value="public"/>
-            <property name="allowMissingPropertyJavadoc" value="true"/>
+            <property name="severity" value="ignore"/>
         </module>
         <module name="JavadocType">
-            <property name="scope" value="public" />
-            <property name="authorFormat" value="\S" />
+            <property name="severity" value="ignore"/>
         </module>
         <!--<module name="JavadocVariable"/>-->
-        <module name="JavadocStyle"/>
+        <module name="JavadocStyle">
+            <property name="severity" value="ignore"/>
+        </module>
 
         <!-- Checks for Naming Conventions.                  -->
         <!-- See http://checkstyle.sf.net/config_naming.html -->
@@ -130,17 +121,18 @@
             <property name="processJavadoc" value="false"/>
         </module>
 
-        <module name="ImportOrder">
-            <property name="groups" value="java,javax,org,com"/>
-            <property name="ordered" value="true"/>
-            <property name="separated" value="true"/>
-        </module>
+        <!-- Disabled checking of import order -->
+        <!--
+                <module name="ImportOrder">
+                    <property name="groups" value="java,javax,org,com"/>
+                    <property name="ordered" value="true"/>
+                    <property name="separated" value="true"/>
+                </module>
+        -->
 
         <!-- Checks for Size Violations.                    -->
         <!-- See http://checkstyle.sf.net/config_sizes.html -->
-        <module name="LineLength">
-            <property name="max" value="163" />
-        </module>
+
         <module name="MethodLength"/>
         <module name="ParameterNumber"/>
 
@@ -151,7 +143,7 @@
         <module name="MethodParamPad"/>
         <module name="NoWhitespaceAfter"/>
         <module name="NoWhitespaceBefore"/>
-        <!--<module name="OperatorWrap"/>-->
+        <module name="OperatorWrap"/>
         <module name="ParenPad"/>
         <module name="TypecastParenPad"/>
         <module name="WhitespaceAfter"/>
@@ -202,12 +194,15 @@
         <module name="TodoComment"/>
         <module name="UpperEll"/>
         <module name="MultipleStringLiterals">
-            <property name="allowedDuplicates" value="4"/>
+            <property name="allowedDuplicates" value="2"/>
         </module>
+    </module>
 
-    </module>
-    <module name="SuppressionFilter">
-        <property name="file" value="suppressions.xml"/>
-        <property name="optional" value="false"/>
-    </module>
+    <!-- Checks for Headers                                -->
+    <!-- See http://checkstyle.sf.net/config_header.html   -->
+    <!-- <module name="Header"> -->
+    <!--   <property name="headerFile" value="${checkstyle.header.file}"/> -->
+    <!--   <property name="fileExtensions" value="java"/> -->
+    <!-- </module> -->
+
 </module>

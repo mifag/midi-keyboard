@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.mifag.app.dto.SpecificationDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,12 +111,22 @@ public class MidiKeyboardController {
     public ResponseEntity<MidiKeyboardDto> updateMidiKeyboard(@RequestBody @Valid MidiKeyboardDto midiBody,
                                                               @PathVariable(value = "midiId") Long updateMidiId)
             throws MidiKeyboardNotFoundException {
-        LOG.info("MidiKeyboardController. UpdateMidiKeyboard. Changing midi keyboard with id: {} " +
+        LOG.info("MidiKeyboardController. UpdateMidiKeyboard. Changing midi keyboard with id: {} "
+                +
                 "to new midi keyboard: {}.", updateMidiId, midiBody.getModel());
         MidiKeyboardDto updatedMidiKeyboard = midiService.updateMidiKeyboard(midiBody, updateMidiId);
         LOG.info("Midi keyboard with id: {} successfully changed. New model: {}.",
                 updatedMidiKeyboard.getId(), updatedMidiKeyboard.getModel());
         return ResponseEntity.ok(updatedMidiKeyboard);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/addSpecification/{midiId}")
+    public ResponseEntity<MidiKeyboardDto> addSpecificationToMidiKeyboard (
+            @RequestBody @Valid SpecificationDto addSpecification,
+            @PathVariable(value = "midiId") Long midiKeyboardId) throws MidiKeyboardNotFoundException {
+        MidiKeyboardDto midiKeyboardWithAddedSpecification = midiService.addSpecificationToKeyboard(
+                addSpecification, midiKeyboardId);
+        return ResponseEntity.ok(midiKeyboardWithAddedSpecification);
     }
 
     /**
@@ -141,7 +152,8 @@ public class MidiKeyboardController {
     @GetMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/findByManufacturer")
     public ResponseEntity<List<MidiKeyboardDto>> findByKeyboardManufacturer(
             @RequestParam(value = "name") String manufacturerName) {
-        LOG.info("MidiKeyboardController. FindByKeyboardManufacturer. Finding midi keyboard by " +
+        LOG.info("MidiKeyboardController. FindByKeyboardManufacturer. Finding midi keyboard by "
+                +
                 "manufacturer: {}.", manufacturerName);
         List<MidiKeyboardDto> foundKeyboards = midiService.findByManufacturer(manufacturerName);
         LOG.info("Midi keyboards by manufacturer: {} successfully found.", manufacturerName);
@@ -163,7 +175,7 @@ public class MidiKeyboardController {
             @RequestParam(value = "equalsKeys", required = false) Long equalsKeys) {
         LOG.info("MidiKeyboardController. FilterByKeyNumber.");
         List<MidiKeyboardDto> foundByKeys = midiService.findByKeys(minKeys, maxKeys, equalsKeys);
-        LOG.info("Midi keyboards successfully found.");
+        LOG.info("Midi keyboards with a given key number successfully found.");
         return ResponseEntity.ok(foundByKeys);
     }
 
@@ -179,7 +191,7 @@ public class MidiKeyboardController {
             @RequestParam(value = "name") String model) throws MidiKeyboardNotFoundException {
         LOG.info("MidiKeyboardController. FilterByModel.");
         MidiKeyboardDto foundByModel = midiService.findByModel(model);
-        LOG.info("Midi keyboard successfully found.");
+        LOG.info("Midi keyboard of a given model successfully found.");
         return ResponseEntity.ok(foundByModel);
     }
 
@@ -194,7 +206,7 @@ public class MidiKeyboardController {
             @RequestParam(value = "cost") Integer cost) {
         LOG.info("MidiKeyboardController. FilterByPrice.");
         List<MidiKeyboardDto> foundByPrice = midiService.findByPrice(cost);
-        LOG.info("Midi keyboards successfully found.");
+        LOG.info("Midi keyboards with provided price successfully found.");
         return ResponseEntity.ok(foundByPrice);
     }
 
@@ -209,7 +221,7 @@ public class MidiKeyboardController {
             @RequestParam(value = "out") Boolean midiOut) {
         LOG.info("MidiKeyboardController. FilterByMidiOut.");
         List<MidiKeyboardDto> foundByMidiOut = midiService.findByMidiOut(midiOut);
-        LOG.info("Midi keyboards successfully found.");
+        LOG.info("Midi keyboards of a given midi-out successfully found.");
         return ResponseEntity.ok(foundByMidiOut);
     }
 

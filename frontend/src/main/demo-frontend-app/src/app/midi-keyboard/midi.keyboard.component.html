@@ -36,9 +36,9 @@
         </th>
         <td>
           <select class="form-control" name="sex" [(ngModel)]="newMidiKeyboard.hasMidiOut">
-            <option value="undefined" [disabled]="true">?</option>
-            <option value="true">есть</option>
-            <option value="false">нет</option>
+            <option value="undefined" [disabled]="true">_</option>
+            <option value="true">+</option>
+            <option value="false">-</option>
           </select>
         </td>
         <th>
@@ -144,8 +144,8 @@
         <input type="button" id="addButton" value="Добавить" (click)="addMidiKeyboard()" class="btn btn-success">
       </td>
       <td>
-       <input *ngIf="newMidiKeyboard" type="button" id="cancelAdd" value="Отмена добавления" (click)="cancelAddMidiKeyboard()"
-             class="btn btn-warning">
+       <input *ngIf="newMidiKeyboard" type="button" id="cancelAdd" value="Отмена добавления"
+              (click)="cancelAddMidiKeyboard()" class="btn btn-warning">
       </td>
     </div>
   </div>

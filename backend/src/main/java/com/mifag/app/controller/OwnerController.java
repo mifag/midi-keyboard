@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.mifag.app.dto.CreateOwnerKeyboardMapDto;
+import com.mifag.app.dto.MidiKeyboardDto;
+import com.mifag.app.service.OwnerMidiKeyboardMapService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +24,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.mifag.app.dto.MidiKeyboardDto;
 import com.mifag.app.dto.OwnerDto;
 import com.mifag.app.exception.MidiKeyboardNotFoundException;
 import com.mifag.app.exception.OwnerNotFoundException;
@@ -37,10 +39,12 @@ public class OwnerController {
     private static final Logger LOG = LoggerFactory.getLogger(OwnerController.class);
 
     private final OwnerService ownerService;
+    private final OwnerMidiKeyboardMapService ownerMidiKeyboardMapService;
 
     @Autowired
-    public OwnerController(OwnerService ownerService) {
+    public OwnerController(OwnerService ownerService, OwnerMidiKeyboardMapService ownerMidiKeyboardMapService) {
         this.ownerService = ownerService;
+        this.ownerMidiKeyboardMapService = ownerMidiKeyboardMapService;
     }
 
     /**
@@ -104,12 +108,32 @@ public class OwnerController {
     public ResponseEntity<OwnerDto> updateOwner(@RequestBody @Valid OwnerDto owner,
                                                 @PathVariable(value = "ownerId") Long ownerId)
             throws OwnerNotFoundException, MidiKeyboardNotFoundException {
-        LOG.info("OwnerController. UpdateOwner. Replacing owner with id: {} " +
-                "to new owner with name: {}.", ownerId, owner.getName());
+        LOG.info("OwnerController. UpdateOwner. Replacing owner with id: {} "
+                + "to new owner with name: {}.", ownerId, owner.getName());
         OwnerDto updatedOwner = ownerService.updateOwner(owner, ownerId);
         LOG.info("Owner with id: {} successfully replaced. Name: {}.", updatedOwner.getId(),
                 updatedOwner.getName());
         return ResponseEntity.ok(updatedOwner);
+    }
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{ownerId}/midiKeyboard/{midiKeyboardId}")
+    public  ResponseEntity<MidiKeyboardDto> createMap2(@PathVariable(value = "ownerId") Long ownerId,
+                                                @PathVariable(value = "midiKeyboardId") Long midiKeyboardId)
+            throws MidiKeyboardNotFoundException, OwnerNotFoundException {
+        LOG.info("OwnerController. Create Map Between Owner with id: {} And Keyboard with id: {} ",
+                ownerId, midiKeyboardId);
+        MidiKeyboardDto midiKeyboardDto2 = ownerMidiKeyboardMapService.createOwnerMidiKeyboardMap2(ownerId,midiKeyboardId);
+        return ResponseEntity.ok(midiKeyboardDto2);
+    }
+
+
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/midiKeyboard/map")
+    public ResponseEntity<MidiKeyboardDto> createMapBetweenOwnerAndKeyboard(
+            @RequestBody @Valid CreateOwnerKeyboardMapDto mapToCreate)
+            throws OwnerNotFoundException, MidiKeyboardNotFoundException {
+        LOG.info("createMapBetweenOwnerAndKeyboard");
+        MidiKeyboardDto midiKeyboardDto = ownerMidiKeyboardMapService.addMapBetweenOwnerAndKeyboard(mapToCreate);
+        return ResponseEntity.ok(midiKeyboardDto);
     }
 
     /**

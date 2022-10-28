@@ -2,6 +2,8 @@ package com.mifag.app.service;
 
 import java.util.Optional;
 
+import com.mifag.app.entity.MidiKeyboard;
+import com.mifag.app.exception.MidiKeyboardNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -42,5 +44,31 @@ public class SpecificationService {
             return new SpecificationDto(specification);
         }
         throw new SpecificationNotFoundException(specId);
+    }
+
+    public SpecificationDto createSpecification(SpecificationDto addSpecification) {
+        Specification specification = new Specification(addSpecification);
+        Specification createdSpecification = specificationRepository.save(specification);
+        return new SpecificationDto(createdSpecification);
+    }
+
+    public SpecificationDto updateSpecification(Long specificationId, SpecificationDto updateSpecificationDto)
+            throws SpecificationNotFoundException {
+        Specification specification = findSpecificationById(specificationId);
+        specification.setWeight(updateSpecificationDto.getWeight());
+        specification.setLength(updateSpecificationDto.getLength());
+        specification.setWidth(updateSpecificationDto.getWidth());
+        specification.setVelocity(updateSpecificationDto.getVelocity());
+        specification.setTypeOfKey(updateSpecificationDto.getTypeOfKey());
+        Specification updatedSpecification = specificationRepository.save(specification);
+        return new SpecificationDto(updatedSpecification);
+    }
+
+    private Specification findSpecificationById(Long specificationId) throws SpecificationNotFoundException {
+        Optional<Specification> specification = specificationRepository.findById(specificationId);
+        if (specification.isPresent()) {
+            return specification.get();
+        }
+        throw new SpecificationNotFoundException(specificationId);
     }
 }
