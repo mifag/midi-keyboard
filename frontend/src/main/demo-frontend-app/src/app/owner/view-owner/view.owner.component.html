@@ -62,8 +62,24 @@
         </tr>
         </tbody>
       </table>
-      <div *ngIf="!ownerDto.midiKeyboardList || (ownerDto.midiKeyboardList && !ownerDto.midiKeyboardList.length)" class="alert alert-dark" role="alert" align="center">
+      <div *ngIf="!ownerDto.midiKeyboardList || (ownerDto.midiKeyboardList && !ownerDto.midiKeyboardList.length)"
+           class="alert alert-dark" role="alert" align="center">
         <h4>У данного человека отсутствуют клавиатуры.</h4>
+      </div>
+      <div>
+        <input type="button" value="Добавить клавиатуру" class="btn btn-success" (click)="getAllMidiKeyboards()">
+      </div>
+      <div *ngIf="midiKeyboardList.length" class="form-group pt-2">
+        <select (change)="selectMidiKeyboard($event)" class="form-control" name="model">
+          <option [value]="undefined" [disabled]="true">Выбрать модель для добавления</option>
+          <option *ngFor="let midiKeyboard of midiKeyboardList" [value]="midiKeyboard.id">
+            {{midiKeyboard.model}}
+          </option>
+        </select>
+        <div>
+          <input type="button" value="Подтвердить добавление" class="btn btn-success"
+                 (click)="createMidiKeyboardMap()">
+        </div>
       </div>
     </div>
   </div>

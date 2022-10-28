@@ -13,4 +13,8 @@ export class SpecificationService {
   getSpecificationById(specificationId): Observable<SpecificationDto> {
     return this.httpClient.get<SpecificationDto>('/api/specification/' + specificationId);
   }
+
+//   saveSpecification(newSpecification: SpecificationDto) {
+//     return this.httpClient.post('api/specification', newSpecification);
+//   }
 }

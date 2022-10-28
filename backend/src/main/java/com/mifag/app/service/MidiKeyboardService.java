@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import com.mifag.app.dto.SpecificationDto;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
@@ -28,6 +29,7 @@ import com.mifag.app.repository.MidiKeyboardRepository;
 public class MidiKeyboardService {
 
     private final MidiKeyboardRepository midiKeyboardRepository;
+    private final SpecificationService specificationService;
 
     /**
      * Constructor.
@@ -35,8 +37,10 @@ public class MidiKeyboardService {
      * @param midiKeyboardRepository - repository of midi-keyboards.
      */
     @Autowired
-    public MidiKeyboardService(MidiKeyboardRepository midiKeyboardRepository) {
+    public MidiKeyboardService(MidiKeyboardRepository midiKeyboardRepository,
+                               SpecificationService specificationService) {
         this.midiKeyboardRepository = midiKeyboardRepository;
+        this.specificationService =  specificationService;
     }
 
     /**
@@ -309,5 +313,18 @@ public class MidiKeyboardService {
             return midiKeyboard.get();
         }
         throw new MidiKeyboardNotFoundException(keyId);
+    }
+
+    public MidiKeyboardDto addSpecificationToKeyboard(SpecificationDto addSpecification, Long midiKeyboardId)
+            throws MidiKeyboardNotFoundException {
+        Optional<MidiKeyboard> foundMidiKeyboard = midiKeyboardRepository.findById(midiKeyboardId);
+        if (foundMidiKeyboard.isEmpty()) {
+            throw new MidiKeyboardNotFoundException(midiKeyboardId);
+        }
+        MidiKeyboard midiKeyboard = foundMidiKeyboard.get();
+        SpecificationDto createdSpecification = specificationService.createSpecification(addSpecification);
+        midiKeyboard.setSpecificationId(createdSpecification.getId());
+        MidiKeyboard midiKeyboardWithAddSpecification = midiKeyboardRepository.save(midiKeyboard);
+        return new MidiKeyboardDto(midiKeyboardWithAddSpecification);
     }
 }

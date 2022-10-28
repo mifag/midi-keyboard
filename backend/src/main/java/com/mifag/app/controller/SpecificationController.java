@@ -1,18 +1,18 @@
 package com.mifag.app.controller;
 
+import com.mifag.app.dto.MidiKeyboardDto;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.mifag.app.dto.SpecificationDto;
 import com.mifag.app.exception.SpecificationNotFoundException;
 import com.mifag.app.service.SpecificationService;
+
+import javax.validation.Valid;
 
 /**
  * @author <a href='mailto:mifag92@rambler.ru'>mifag</a>
@@ -53,4 +53,29 @@ public class SpecificationController {
         LOG.info("Specification with id: {} successfully found.", specId);
         return ResponseEntity.ok(specificationDto);
     }
+
+
+
+    /**
+     * Update Specification by id.
+     *
+     * @param specificationId - specification id.
+     * @return specification dto.
+     * @throws SpecificationNotFoundException if specification not found.
+     */
+    @PutMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/{specificationId}")
+    public ResponseEntity<SpecificationDto> updateSpecification(
+            @PathVariable(value = "specificationId") Long specificationId,
+            @RequestBody @Valid SpecificationDto updateSpecification) throws SpecificationNotFoundException {
+        LOG.info("SpecificationController. UpdateSpecificationById. Updating specification with Id: {}.",
+                specificationId);
+        SpecificationDto updatedSpecification = specificationService.updateSpecification(specificationId,
+                updateSpecification);
+        LOG.info("Specification with id: {} successfully updated.", specificationId);
+        return ResponseEntity.ok(updatedSpecification);
+    }
+//    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
+//    public ResponseEntity<SpecificationDto> createSpecification( SpecificationDto newSpecificationDto) {
+//
+//    }
 }
