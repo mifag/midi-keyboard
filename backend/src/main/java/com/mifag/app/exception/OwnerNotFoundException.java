@@ -14,6 +14,6 @@ public class OwnerNotFoundException extends Exception {
      * @param ownerId .
      */
     public OwnerNotFoundException(Long ownerId) {
-        super("Owner with id " + ownerId + " not found.");
+        super("Owner with id " + ownerId + " not found!");
     }
 }
