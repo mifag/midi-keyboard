@@ -14,9 +14,13 @@ import { OwnerComponent } from './owner/owner.component';
 import { MidiKeyboardService } from './midi-keyboard/midi.keyboard.service';
 import { OwnerService } from './owner/owner.service';
 import { ViewMidiKeyboardService } from './midi-keyboard/view-midi-keyboard/view.midi.keyboard.service';
+import { UpdateMidiKeyboardService } from
+       './midi-keyboard/view-midi-keyboard/update-midi-keyboard/update.midi.keyboard.service';
 import { ViewOwnerService } from './owner/view-owner/view.owner.service';
 import { SpecificationService } from './midi-keyboard/specification/specification.service';
 import { EnumService } from './util/enum.service';
+import { UpdateMidiKeyboardComponent } from
+       './midi-keyboard/view-midi-keyboard/update-midi-keyboard/update.midi.keyboard.component';
 
 @NgModule({
   declarations: [
@@ -26,7 +30,8 @@ import { EnumService } from './util/enum.service';
     OwnerComponent,
     ViewMidiKeyboardComponent,
     ViewOwnerComponent,
-    SpecificationComponent
+    SpecificationComponent,
+    UpdateMidiKeyboardComponent
   ],
   imports: [
     BrowserModule,
@@ -38,6 +43,7 @@ import { EnumService } from './util/enum.service';
     MidiKeyboardService,
     OwnerService,
     ViewMidiKeyboardService,
+    UpdateMidiKeyboardService,
     ViewOwnerService,
     SpecificationService,
     EnumService

@@ -25,7 +25,7 @@
             <th>{{midiKeyboardDto.keysNumber}}</th>
           </tr>
           <tr>
-            <th>Midi-Выход </th>
+            <th>Midi-Выход: </th>
             <td>
               <div class="midi-out-img mx-auto" [ngClass]="{'image-yes': midiKeyboardDto.hasMidiOut,
               'image-no': !midiKeyboardDto.hasMidiOut}">
@@ -38,6 +38,9 @@
           </tr>
         </tbody>
       </table>
+      <button class="btn btn-block btn-outline-success" (click)="openUpdateMidiKeyboardView()">
+        Редактировать
+      </button>
     </div>
 
     <!-- Specification -->
@@ -76,7 +79,7 @@
               <th>{{specificationDto.width}}</th>
             </tr>
             <tr>
-              <th>Чувствительность </th>
+              <th>Чувствительность: </th>
               <td>
                 <div class="midi-out-img mx-auto" [ngClass]="{'image-yes':specificationDto.velocity,
                   'image-no': !specificationDto.velocity}">
@@ -127,7 +130,7 @@
               <select class="form-control" name="typeOfKey" [(ngModel)]="specificationDto.typeOfKey">
                 <option value="HAMMER_ACTION">Молоточковая</option>
                 <option value="SYNTH_ACTION">Синтезаторная</option>
-                <option value="SEMY_WEIGTHED">Полувзвешенная</option>
+                <option value="SEMI_WEIGHTED">Полувзвешенная</option>
               </select>
             </tr>
             </tbody>
@@ -167,7 +170,7 @@
             <option [value]="undefined" [disabled]="true">Тип механики:</option>
             <option value="HAMMER_ACTION">Молоточковая</option>
             <option value="SYNTH_ACTION">Синтезаторная</option>
-            <option value="SEMY_WEIGTHED">Полувзвешенная</option>
+            <option value="SEMI_WEIGHTED">Полувзвешенная</option>
           </select>
         </tr>
         <tr>

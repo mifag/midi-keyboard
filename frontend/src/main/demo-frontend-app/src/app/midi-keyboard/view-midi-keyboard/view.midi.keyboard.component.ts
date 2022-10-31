@@ -115,4 +115,8 @@ export class ViewMidiKeyboardComponent {
       console.log(error);
     });
   }
+
+  openUpdateMidiKeyboardView() {
+    this.router.navigate(['midi-keyboard/update/', this.id]);
+  }
 }
