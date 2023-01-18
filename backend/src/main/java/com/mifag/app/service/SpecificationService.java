@@ -2,8 +2,6 @@ package com.mifag.app.service;
 
 import java.util.Optional;
 
-import com.mifag.app.entity.MidiKeyboard;
-import com.mifag.app.exception.MidiKeyboardNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

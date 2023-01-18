@@ -1,17 +1,23 @@
 <div class="container-fluid">
   <div class="row row-model">
-    <div class="col-4 offset-1">
+    <div class="col-4">
       <div>{{error}}</div>
     </div>
   </div>
+
   <div class="row">
-    <div class="col-3 offset-1">
-      <div class="shadow-sm p-2 mb-2 bg-white" align="center">
-        <h2>{{midiKeyboardDto.manufacturer}} {{midiKeyboardDto.model}}</h2>
-      </div>
-      <table class="table table-striped">
-        <thead></thead>
-        <tbody>
+
+    <!--MidiKeyboard-->
+    <div class="col-3">
+
+      <!--шаблон для чтения-->
+      <div *ngIf="!isMidiKeyboardUpdate">
+        <div class="shadow-sm p-2 mb-2 bg-white" align="center">
+          <h2>{{midiKeyboardDto.manufacturer}} {{midiKeyboardDto.model}}</h2>
+        </div>
+        <table class="table table-striped">
+          <thead></thead>
+          <tbody>
           <tr>
             <th>Модель: </th>
             <th>{{midiKeyboardDto.model}}</th>
@@ -36,12 +42,60 @@
             <th>Цена: </th>
             <th>{{midiKeyboardDto.price}}</th>
           </tr>
-        </tbody>
-      </table>
+          </tbody>
+        </table>
+        <div *ngIf="statusMessageKeyboard" class="alert alert-success alert-dismissible">
+          <strong>{{statusMessageKeyboard}}</strong>
+        </div>
+        <button class="btn btn-block btn-outline-success" (click)="openUpdateMidiKeyboardView()">
+          редактировать
+        </button>
+      </div>
+
+      <!--шаблон для редактирования-->
+      <div *ngIf="isMidiKeyboardUpdate">
+        <div class="shadow-sm p-2 mb-2 bg-white" align="center">
+          <h2>Редактирование</h2>
+        </div>
+        <table class="table table-striped">
+          <thead></thead>
+          <tbody>
+          <tr>
+            <th>Модель: </th>
+            <input type="text" [(ngModel)]="midiKeyboardDto.model" class="form-control" min="1"/>
+          </tr>
+          <tr>
+            <th>Производитель: </th>
+            <input type="text" [(ngModel)]="midiKeyboardDto.manufacturer" class="form-control" min="1"/>
+          </tr>
+          <tr>
+            <th>Кол-во клавиш: </th>
+            <input type="number" [(ngModel)]="midiKeyboardDto.keysNumber" class="form-control" min="1"/>
+          </tr>
+          <tr>
+            <th>Midi-Выход </th>
+            <select class="form-control" name="hasMidiOut" [(ngModel)]="midiKeyboardDto.hasMidiOut">
+              <option value="true">Есть</option>
+              <option value="false">Нет</option>
+            </select>
+          </tr>
+          <tr>
+            <th>Цена: </th>
+            <input type="number" [(ngModel)]="midiKeyboardDto.price" class="form-control" min="1"/>
+          </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-block btn-outline-success" (click)="updateMidiKeyboard()">
+          сохранить
+        </button>
+        <button class="btn btn-block btn-outline-warning" (click)="cancelUpdateMidiKeyboard()">
+          отмена
+        </button>
+      </div>
     </div>
 
     <!-- Specification -->
-    <div class="col-3">
+    <div class="col-4">
       <div class="shadow-sm p-2 mb-2 bg-white" align="center">
         <h2>Спецификация</h2>
       </div>
@@ -49,44 +103,83 @@
 
       <ng-template #nonSpecification>
         <div>
-        <!-- <div [ngClass]="midiKeyboardDto.specificationId ? 'display-none': 'display-block'" id="nonSpecification" > -->
           <div class="shadow-sm p-2 mb-2 bg-white" align="center">
             <h4>Спецификация отсутствует!</h4>
           </div>
           <button class="btn btn-block btn-outline-success" (click)="addSpecification()">Добавить</button>
         </div>
+
+        <!--шаблон для добавления-->
+        <table class="table table-striped" *ngIf="isSpecificationCreate">
+          <thead>
+          </thead>
+          <tbody>
+          <tr>
+            <input type="number" [(ngModel)]="newSpecification.weight" class="form-control"
+                   placeholder="Вес (кг):" min="10"/>
+          </tr>
+          <tr>
+            <input type="number" [(ngModel)]="newSpecification.length" class="form-control"
+                   placeholder="Длина (мм):" min="100"/>
+          </tr>
+          <tr>
+            <input type="number" [(ngModel)]="newSpecification.width" class="form-control"
+                   placeholder="Ширина (мм):" min="10"/>
+          </tr>
+          <tr>
+            <select class="form-control" name="velocity" [(ngModel)]="newSpecification.velocity">
+              <option value="undefined" [disabled]="true">Чувствительность:</option>
+              <option value="true">Есть</option>
+              <option value="false">Нет</option>
+            </select>
+          </tr>
+          <tr>
+            <select class="form-control" name="typeOfKey" [(ngModel)]="newSpecification.typeOfKey">
+              <option [value]="undefined" [disabled]="true">Тип механики:</option>
+              <option value="HAMMER_ACTION">Молоточковая</option>
+              <option value="SYNTH_ACTION">Синтезаторная</option>
+              <option value="SEMY_WEIGTHED">Полувзвешенная</option>
+            </select>
+          </tr>
+          <tr>
+            <input type="button" value="Сохранить" (click)="saveSpecification()" class="btn btn-success" />
+            <input type="button" value="Отмена добавления" (click)="cancelAddSpecification()" class="btn btn-warning" />
+          </tr>
+          </tbody>
+        </table>
       </ng-template>
 
       <ng-template #specification>
+
         <!--шаблон для чтения-->
-        <div *ngIf="!oldSpecification">
+        <div *ngIf="!isSpecificationUpdate">
           <table class="table table-striped">
             <thead></thead>
             <tbody>
-            <tr>
-              <th>Вес (кг): </th>
-              <th>{{specificationDto.weight}}</th>
-            </tr>
-            <tr>
-              <th>Длина (мм): </th>
-              <th>{{specificationDto.length}}</th>
-            </tr>
-            <tr>
-              <th>Ширина (мм): </th>
-              <th>{{specificationDto.width}}</th>
-            </tr>
-            <tr>
-              <th>Чувствительность </th>
-              <td>
-                <div class="midi-out-img mx-auto" [ngClass]="{'image-yes':specificationDto.velocity,
-                  'image-no': !specificationDto.velocity}">
-                </div>
-              </td>
-            </tr>
-            <tr>
-              <th>Механика: </th>
-              <th>{{enumService.getTypeOfKeyEnumValue(specificationDto.typeOfKey)}}</th>
-            </tr>
+              <tr>
+                <th>Вес (кг): </th>
+                <th>{{specificationDto.weight}}</th>
+              </tr>
+              <tr>
+                <th>Длина (мм): </th>
+                <th>{{specificationDto.length}}</th>
+              </tr>
+              <tr>
+                <th>Ширина (мм): </th>
+                <th>{{specificationDto.width}}</th>
+              </tr>
+              <tr>
+                <th>Чувствительность </th>
+                <td>
+                  <div class="midi-out-img mx-auto" [ngClass]="{'image-yes':specificationDto.velocity,
+                    'image-no': !specificationDto.velocity}">
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <th>Механика: </th>
+                <th>{{enumService.getTypeOfKeyEnumValue(specificationDto.typeOfKey)}}</th>
+              </tr>
             </tbody>
           </table>
           <div *ngIf="statusMessage" class="alert alert-success alert-dismissible">
@@ -98,7 +191,7 @@
         </div>
 
         <!-- Шаблон редактирования -->
-        <div  *ngIf="oldSpecification">
+        <div  *ngIf="isSpecificationUpdate">
           <table class="table table-striped">
             <thead>
             </thead>
@@ -132,50 +225,14 @@
             </tr>
             </tbody>
           </table>
-          <input type="button" value="Сохранить" (click)="updateSpecification()" class="btn btn-success" />
-          <input type="button" value="Отмена" (click)="cancelUpdateSpecification()"
-                   class="btn btn-warning" />
+          <button class="btn btn-block btn-outline-success" (click)="updateSpecification()">
+            сохранить
+          </button>
+          <button class="btn btn-block btn-outline-warning" (click)="cancelUpdateSpecification()">
+            отмена
+          </button>
         </div>
       </ng-template>
-
-      <!--шаблон для добавления-->
-      <table class="table table-striped" *ngIf="isSpecificationCreate">
-        <thead>
-        </thead>
-        <tbody>
-        <tr>
-          <input type="number" [(ngModel)]="newSpecification.weight" class="form-control"
-                 placeholder="Вес (кг):" min="10"/>
-        </tr>
-        <tr>
-          <input type="number" [(ngModel)]="newSpecification.length" class="form-control"
-                 placeholder="Длина (мм):" min="100"/>
-        </tr>
-        <tr>
-          <input type="number" [(ngModel)]="newSpecification.width" class="form-control"
-                 placeholder="Ширина (мм):" min="10"/>
-        </tr>
-        <tr>
-          <select class="form-control" name="velocity" [(ngModel)]="newSpecification.velocity">
-            <option value="undefined" [disabled]="true">Чувствительность:</option>
-            <option value="true">Есть</option>
-            <option value="false">Нет</option>
-          </select>
-        </tr>
-        <tr>
-          <select class="form-control" name="typeOfKey" [(ngModel)]="newSpecification.typeOfKey">
-            <option [value]="undefined" [disabled]="true">Тип механики:</option>
-            <option value="HAMMER_ACTION">Молоточковая</option>
-            <option value="SYNTH_ACTION">Синтезаторная</option>
-            <option value="SEMY_WEIGTHED">Полувзвешенная</option>
-          </select>
-        </tr>
-        <tr>
-          <input type="button" value="Сохранить" (click)="saveSpecification()" class="btn btn-success" />
-          <input type="button" value="Отмена добавления" (click)="cancelAddSpecification()" class="btn btn-warning" />
-        </tr>
-        </tbody>
-      </table>
     </div>
 
     <!-- Owners -->

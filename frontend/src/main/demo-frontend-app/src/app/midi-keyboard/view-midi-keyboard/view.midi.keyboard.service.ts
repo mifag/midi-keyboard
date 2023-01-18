@@ -23,4 +23,8 @@ export class ViewMidiKeyboardService {
     return this.httpClient.put<SpecificationDto>('api/specification/' + specificationId, updatedSpecification)
   }
 
+  updateMidiKeyboard(midiKeyboardId: number, updatedMidiKeyboard: MidiKeyboardDto) {
+    return this.httpClient.put<MidiKeyboardDto>('api/midiKeyboard/' + midiKeyboardId, updatedMidiKeyboard)
+  }
+
 }

@@ -19,14 +19,19 @@ export class ViewMidiKeyboardComponent {
 
   id: number = null;
   specificationId: number = null;
+  midiKeyboardId: number = null;
   midiKeyboardDto: MidiKeyboardDto = new MidiKeyboardDto();
   specificationDto: SpecificationDto = new SpecificationDto();
   error:any;
   statusMessage: string;
+  statusMessageKeyboard: string;
   newSpecification: SpecificationDto;
   oldSpecification: SpecificationDto;
+  newMidiKeyboard: MidiKeyboardDto;
+  oldMidiKeyboard: MidiKeyboardDto;
   isSpecificationCreate: boolean = false;
   isSpecificationUpdate: boolean = false;
+  isMidiKeyboardUpdate: boolean = false;
 
 
   constructor(private viewMidiKeyboardService: ViewMidiKeyboardService,
@@ -41,6 +46,7 @@ export class ViewMidiKeyboardComponent {
   getMidiKeyboardById() {
     this.viewMidiKeyboardService.getMidiById(this.id).subscribe(midiKeyboard => {
       this.midiKeyboardDto = midiKeyboard;
+      this.midiKeyboardId = midiKeyboard.id;
       this.specificationId = midiKeyboard.specificationId;
       this.getSpecificationById();
       },
@@ -109,6 +115,35 @@ export class ViewMidiKeyboardComponent {
       this.specificationDto = specification;
       this.getSpecificationById();
       this.isSpecificationUpdate = false;
+      this.oldSpecification = null;
+    },
+    error => {
+      this.error = error.message;
+      console.log(error);
+    });
+  }
+
+  openUpdateMidiKeyboardView() {
+    this.isMidiKeyboardUpdate = true;
+    this.oldMidiKeyboard = new MidiKeyboardDto;
+    Object.assign(this.oldMidiKeyboard, this.midiKeyboardDto);
+  }
+
+
+  cancelUpdateMidiKeyboard() {
+    this.isMidiKeyboardUpdate = false;
+    Object.assign(this.midiKeyboardDto, this.oldMidiKeyboard);
+    this.oldMidiKeyboard = null;
+  }
+
+  updateMidiKeyboard() {
+    this.viewMidiKeyboardService.updateMidiKeyboard(
+    this.midiKeyboardId, this.midiKeyboardDto).subscribe(midiKeyboard => {
+      this.statusMessageKeyboard = 'Данные успешно обновлены';
+      this.midiKeyboardDto = midiKeyboard;
+      this.getMidiKeyboardById();
+      this.isMidiKeyboardUpdate = false;
+      this.oldMidiKeyboard = null;
     },
     error => {
       this.error = error.message;

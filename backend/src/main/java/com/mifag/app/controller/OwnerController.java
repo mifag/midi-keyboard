@@ -122,7 +122,8 @@ public class OwnerController {
             throws MidiKeyboardNotFoundException, OwnerNotFoundException {
         LOG.info("Create Map Between Owner with id: {} And Keyboard with id: {} ",
                 ownerId, midiKeyboardId);
-        MidiKeyboardDto midiKeyboardDto2 = ownerMidiKeyboardMapService.createOwnerMidiKeyboardMap2(ownerId,midiKeyboardId);
+        MidiKeyboardDto midiKeyboardDto2 = ownerMidiKeyboardMapService.createOwnerMidiKeyboardMap2(ownerId,
+                midiKeyboardId);
         return ResponseEntity.ok(midiKeyboardDto2);
     }
 
