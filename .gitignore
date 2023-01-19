@@ -12,3 +12,6 @@ buildNumber.properties
 /.idea/
 /frontend/src/main/demo-frontend-app/.vscode/
 /logs/
+/demo.iml
+/frontend/frontend.iml
+/backend/backend.iml

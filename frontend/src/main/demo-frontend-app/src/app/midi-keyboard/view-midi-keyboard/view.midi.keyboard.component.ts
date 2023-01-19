@@ -32,6 +32,7 @@ export class ViewMidiKeyboardComponent {
   isSpecificationCreate: boolean = false;
   isSpecificationUpdate: boolean = false;
   isMidiKeyboardUpdate: boolean = false;
+  isMidiKeyboardDelete: boolean = false;
 
 
   constructor(private viewMidiKeyboardService: ViewMidiKeyboardService,
@@ -72,13 +73,11 @@ export class ViewMidiKeyboardComponent {
   addSpecification() {
     this.isSpecificationCreate = true;
     this.newSpecification = new SpecificationDto();
-//     document.getElementById( 'nonSpecification' ).style.display = 'none';
   }
 
   cancelAddSpecification() {
     this.isSpecificationCreate = false;
     this.newSpecification = null;
-//    document.getElementById('nonSpecification' ).style.display = 'block';
   }
 
   saveSpecification() {
@@ -149,5 +148,20 @@ export class ViewMidiKeyboardComponent {
       this.error = error.message;
       console.log(error);
     });
+  }
+
+  confirmDeleteMidiKeyboard() {
+    this.isMidiKeyboardDelete = true;
+  }
+
+  cancerDeleteMidiKeyboard() {
+    this.isMidiKeyboardDelete = false;
+  }
+
+  deleteMidiKeyboard() {
+    this.viewMidiKeyboardService.deleteMidiKeyboard(this.midiKeyboardId).subscribe(data => {
+      this.statusMessageKeyboard = 'клавиатура успешно удалена';
+    });
+    this.isMidiKeyboardDelete = false;
   }
 }
