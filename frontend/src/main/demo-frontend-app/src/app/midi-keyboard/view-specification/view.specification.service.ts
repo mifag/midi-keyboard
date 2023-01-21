@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { SpecificationDto } from './../dto/specification.dto';
 
 @Injectable()
-export class SpecificationService {
+export class ViewSpecificationService {
 
   constructor(private httpClient: HttpClient) {
 
@@ -14,7 +14,7 @@ export class SpecificationService {
     return this.httpClient.get<SpecificationDto>('/api/specification/' + specificationId);
   }
 
-//   saveSpecification(newSpecification: SpecificationDto) {
-//     return this.httpClient.post('api/specification', newSpecification);
-//   }
+  updateSpecification(specificationId: number, updatedSpecification: SpecificationDto) {
+    return this.httpClient.put<SpecificationDto>('api/specification/' + specificationId, updatedSpecification)
+  }
 }

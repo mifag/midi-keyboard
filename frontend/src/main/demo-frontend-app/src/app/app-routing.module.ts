@@ -6,7 +6,7 @@ import { MidiKeyboardComponent } from './midi-keyboard/midi.keyboard.component';
 import { OwnerComponent } from './owner/owner.component';
 import { ViewMidiKeyboardComponent } from './midi-keyboard/view-midi-keyboard/view.midi.keyboard.component';
 import { ViewOwnerComponent } from './owner/view-owner/view.owner.component';
-import { SpecificationComponent } from './midi-keyboard/specification/specification.component';
+import { ViewSpecificationComponent } from './midi-keyboard/view-specification/view.specification.component';
 
 const routes: Routes = [
   {
@@ -35,8 +35,8 @@ const routes: Routes = [
     component: ViewOwnerComponent
   },
   {
-    path: 'specification',
-    component: SpecificationComponent
+    path: 'specification/view/:id',
+    component: ViewSpecificationComponent
   }
 ];
 
