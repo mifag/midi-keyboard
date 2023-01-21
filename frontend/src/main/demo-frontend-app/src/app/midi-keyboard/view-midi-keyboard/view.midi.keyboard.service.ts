@@ -27,4 +27,8 @@ export class ViewMidiKeyboardService {
     return this.httpClient.put<MidiKeyboardDto>('api/midiKeyboard/' + midiKeyboardId, updatedMidiKeyboard)
   }
 
+  deleteMidiKeyboard(midiKeyboardId: number) {
+    return this.httpClient.delete<MidiKeyboardDto>('api/midiKeyboard/' + midiKeyboardId)
+  }
+
 }

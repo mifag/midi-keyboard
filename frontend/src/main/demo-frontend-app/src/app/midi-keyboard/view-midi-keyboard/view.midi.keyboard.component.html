@@ -8,7 +8,7 @@
   <div class="row">
 
     <!--MidiKeyboard-->
-    <div class="col-3">
+    <div class="col-lg-4 col-md-6">
 
       <!--шаблон для чтения-->
       <div *ngIf="!isMidiKeyboardUpdate">
@@ -31,7 +31,7 @@
             <th>{{midiKeyboardDto.keysNumber}}</th>
           </tr>
           <tr>
-            <th>Midi-Выход </th>
+            <th>Midi-Выход: </th>
             <td>
               <div class="midi-out-img mx-auto" [ngClass]="{'image-yes': midiKeyboardDto.hasMidiOut,
               'image-no': !midiKeyboardDto.hasMidiOut}">
@@ -47,9 +47,25 @@
         <div *ngIf="statusMessageKeyboard" class="alert alert-success alert-dismissible">
           <strong>{{statusMessageKeyboard}}</strong>
         </div>
-        <button class="btn btn-block btn-outline-success" (click)="openUpdateMidiKeyboardView()">
-          редактировать
-        </button>
+        <div *ngIf="!isMidiKeyboardDelete">
+          <button class="btn col-6 btn-outline-success" (click)="openUpdateMidiKeyboardView()">
+            редактировать
+          </button>
+          <button class="btn col-6 btn-outline-danger" (click)="confirmDeleteMidiKeyboard()">
+            удалить
+          </button>
+        </div>
+        <div *ngIf="isMidiKeyboardDelete">
+          <h3 align="center">
+            Вы уверены что хотите удалить {{midiKeyboardDto.model}}?
+          </h3>
+          <button class="btn col-6 btn-outline-danger" (click)="deleteMidiKeyboard()">
+            Да, удалить
+          </button>
+          <button class="btn col-6 btn-outline-success" (click)="cancerDeleteMidiKeyboard()">
+            Нет, отмена
+          </button>
+        </div>
       </div>
 
       <!--шаблон для редактирования-->
@@ -73,7 +89,7 @@
             <input type="number" [(ngModel)]="midiKeyboardDto.keysNumber" class="form-control" min="1"/>
           </tr>
           <tr>
-            <th>Midi-Выход </th>
+            <th>Midi-Выход: </th>
             <select class="form-control" name="hasMidiOut" [(ngModel)]="midiKeyboardDto.hasMidiOut">
               <option value="true">Есть</option>
               <option value="false">Нет</option>
@@ -85,17 +101,17 @@
           </tr>
           </tbody>
         </table>
-        <button class="btn btn-block btn-outline-success" (click)="updateMidiKeyboard()">
+        <button class="btn col-6 btn-outline-success" (click)="updateMidiKeyboard()">
           сохранить
         </button>
-        <button class="btn btn-block btn-outline-warning" (click)="cancelUpdateMidiKeyboard()">
+        <button class="btn col-6 btn-outline-warning" (click)="cancelUpdateMidiKeyboard()">
           отмена
         </button>
       </div>
     </div>
 
     <!-- Specification -->
-    <div class="col-4">
+    <div class="col-lg-4 col-md-6">
       <div class="shadow-sm p-2 mb-2 bg-white" align="center">
         <h2>Спецификация</h2>
       </div>
@@ -169,7 +185,7 @@
                 <th>{{specificationDto.width}}</th>
               </tr>
               <tr>
-                <th>Чувствительность </th>
+                <th>Чувствительность: </th>
                 <td>
                   <div class="midi-out-img mx-auto" [ngClass]="{'image-yes':specificationDto.velocity,
                     'image-no': !specificationDto.velocity}">
@@ -236,7 +252,7 @@
     </div>
 
     <!-- Owners -->
-    <div class="col-5">
+    <div class="col-lg-4">
       <div class="shadow-sm p-2 mb-2 bg-white" align="center">
         <h2>Владельцы</h2>
       </div>
