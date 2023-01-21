@@ -4,7 +4,7 @@ import { ViewMidiKeyboardService } from './view.midi.keyboard.service';
 import { MidiKeyboardDto } from './../dto/midi.keyboard.dto';
 import { SpecificationDto } from './../dto/specification.dto';
 import { OwnerDto } from './../../owner/dto/owner.dto';
-import { SpecificationService } from './../specification/specification.service';
+import { ViewSpecificationService } from './../view-specification/view.specification.service';
 import { EnumService } from './../../util/enum.service';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
@@ -36,7 +36,7 @@ export class ViewMidiKeyboardComponent {
 
 
   constructor(private viewMidiKeyboardService: ViewMidiKeyboardService,
-              private specificationService: SpecificationService,
+              private viewSpecificationService: ViewSpecificationService,
               public enumService: EnumService,
               private router: Router,
               private activateRoute: ActivatedRoute) {
@@ -60,7 +60,7 @@ export class ViewMidiKeyboardComponent {
 
   getSpecificationById() {
     if (this.specificationId) {
-      this.specificationService.getSpecificationById(this.specificationId).subscribe(
+      this.viewSpecificationService.getSpecificationById(this.specificationId).subscribe(
         specification => {this.specificationDto = specification;}
       );
     }
@@ -163,5 +163,9 @@ export class ViewMidiKeyboardComponent {
       this.statusMessageKeyboard = 'клавиатура успешно удалена';
     });
     this.isMidiKeyboardDelete = false;
+  }
+
+  viewSpecification() {
+    this.router.navigate(['specification/view/', this.specificationId])
   }
 }
