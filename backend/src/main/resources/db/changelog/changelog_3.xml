@@ -127,4 +127,19 @@
         </createTable>
     </changeSet>
 
+    <changeSet id="9" author="mifag">
+        <preConditions>
+            <not>
+                <tableExists tableName="keyboard_image_blob"/>
+            </not>
+        </preConditions>
+        <createTable tableName="keyboard_image_blob">
+            <column name="id" autoIncrement="true" type="bigserial">
+                <constraints primaryKey="true" primaryKeyName="pk_keyboard_image_blob"/>
+            </column>
+            <column name="specification_id" type="bigint"/>
+            <column name="image" type="blob"/>
+        </createTable>
+    </changeSet>
+
 </databaseChangeLog>

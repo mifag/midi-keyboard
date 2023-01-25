@@ -18,7 +18,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.mifag.app.dto.SpecificationDto;
 import com.mifag.app.entity.KeyboardImage;
+import com.mifag.app.entity.KeyboardImageBlob;
 import com.mifag.app.exception.SpecificationNotFoundException;
+import com.mifag.app.repository.KeyboardImageBlobRepository;
 import com.mifag.app.repository.KeyboardImageRepository;
 import com.mifag.app.service.SpecificationService;
 
@@ -39,6 +41,9 @@ public class SpecificationController {
     @Autowired
     private KeyboardImageRepository keyboardImageRepository;
 
+    @Autowired
+    private KeyboardImageBlobRepository keyboardImageBlobRepository;
+
     /**
      * Constructor.
      *
@@ -47,6 +52,23 @@ public class SpecificationController {
     @Autowired
     public SpecificationController(SpecificationService specificationService) {
         this.specificationService = specificationService;
+    }
+
+    @GetMapping(path = "/testAssBlob")
+    public ResponseEntity<String> createImageBlob() {
+        KeyboardImageBlob keyboardImageBlob = new KeyboardImageBlob();
+        keyboardImageBlob.setImage("assBlob".getBytes(StandardCharsets.UTF_8));
+        keyboardImageBlob = keyboardImageBlobRepository.save(keyboardImageBlob);
+        return ResponseEntity.ok(new String(keyboardImageBlob.getImage()));
+    }
+
+    @GetMapping(path = "/testBlob")
+    public ResponseEntity<String> getImageBlob() {
+        Iterable<KeyboardImageBlob> keyboardImages = keyboardImageBlobRepository.findAll();
+        for (KeyboardImageBlob keyboardImage : keyboardImages) {
+            return ResponseEntity.ok(new String(keyboardImage.getImage()));
+        }
+        return ResponseEntity.ok("pissBlob");
     }
 
     @GetMapping(path = "/testAss")
