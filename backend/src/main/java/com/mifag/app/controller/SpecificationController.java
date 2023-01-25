@@ -1,5 +1,7 @@
 package com.mifag.app.controller;
 
+import java.nio.charset.StandardCharsets;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -15,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.mifag.app.dto.SpecificationDto;
+import com.mifag.app.entity.KeyboardImage;
 import com.mifag.app.exception.SpecificationNotFoundException;
+import com.mifag.app.repository.KeyboardImageRepository;
 import com.mifag.app.service.SpecificationService;
 
 /**
@@ -32,6 +36,9 @@ public class SpecificationController {
 
     private final SpecificationService specificationService;
 
+    @Autowired
+    private KeyboardImageRepository keyboardImageRepository;
+
     /**
      * Constructor.
      *
@@ -40,6 +47,23 @@ public class SpecificationController {
     @Autowired
     public SpecificationController(SpecificationService specificationService) {
         this.specificationService = specificationService;
+    }
+
+    @GetMapping(path = "/testAss")
+    public ResponseEntity<String> createImage() {
+        KeyboardImage keyboardImage = new KeyboardImage();
+        keyboardImage.setImage("ass".getBytes(StandardCharsets.UTF_8));
+        keyboardImage = keyboardImageRepository.save(keyboardImage);
+        return ResponseEntity.ok(new String(keyboardImage.getImage()));
+    }
+
+    @GetMapping(path = "/test")
+    public ResponseEntity<String> getImage() {
+        Iterable<KeyboardImage> keyboardImages = keyboardImageRepository.findAll();
+        for (KeyboardImage keyboardImage : keyboardImages) {
+            return ResponseEntity.ok(new String(keyboardImage.getImage()));
+        }
+        return ResponseEntity.ok("piss");
     }
 
     /**
