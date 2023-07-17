@@ -121,7 +121,7 @@ public class MidiKeyboardController {
     }
 
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, path = "/addSpecification/{midiId}")
-    public ResponseEntity<MidiKeyboardDto> addSpecificationToMidiKeyboard (
+    public ResponseEntity<MidiKeyboardDto> addSpecificationToMidiKeyboard(
             @RequestBody @Valid SpecificationDto addSpecification,
             @PathVariable(value = "midiId") Long midiKeyboardId) throws MidiKeyboardNotFoundException {
         MidiKeyboardDto midiKeyboardWithAddedSpecification = midiService.addSpecificationToKeyboard(

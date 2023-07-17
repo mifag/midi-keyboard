@@ -27,8 +27,9 @@ public class AverageKeyboardsNumberJob {
         LOG.info("countAverageKeyboardsNumber started");
         long ownersCount = ownerRepository.count();
         long midiKeyboardCount = ownerMidiKeyboardMapRepository.count();
-        Double countedAverage = (double) midiKeyboardCount/ownersCount;
+        Double countedAverage = (double) midiKeyboardCount / ownersCount;
         String formattedAverage = new DecimalFormat("#0.00").format(countedAverage);
         LOG.info("average:{}", formattedAverage);
     }
 }
+
